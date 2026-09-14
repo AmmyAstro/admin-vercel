@@ -20,7 +20,7 @@ export default function UserChatHistoryPage() {
   const [openModal, setOpenModal] = useState(false);
   const [selectedSession, setSelectedSession] = useState(null);
   const [searchName, setSearchName] = useState("");
-  const [searchMobile, setSearchMobile] = useState("");
+  const [searchSession, setSearchSession] = useState("");
   const [searchAstrologerName, setSearchAstrologerName] = useState("");
   const [openRemedyModal, setOpenRemedyModal] = useState(false);
   const [searchType, setSearchType] = useState("");
@@ -79,7 +79,7 @@ export default function UserChatHistoryPage() {
 
       setFilters({
         query: searchName,
-        mobile: searchMobile,
+        session: searchSession,
         astrologerName: searchAstrologerName,
         status: searchStatus,
         filterType: searchFilterType,
@@ -91,7 +91,7 @@ export default function UserChatHistoryPage() {
     return () => clearTimeout(timer);
   }, [
     searchName,
-    searchMobile,
+    searchSession,
     searchAstrologerName,
     searchStatus,
     searchFilterType,
@@ -109,8 +109,8 @@ export default function UserChatHistoryPage() {
     searchInput.query = filters.query;
   }
 
-  if (filters.mobile) {
-    searchInput.mobile = filters.mobile;
+  if (filters.session) {
+    searchInput.session = filters.session;
   }
 
   if (filters.astrologerName) {
@@ -512,7 +512,7 @@ export default function UserChatHistoryPage() {
         {/* USER NAME */}
         <input
           type="text"
-          placeholder="Search by user name"
+          placeholder="Search by user name & ID"
           value={searchName}
           onChange={(e) => setSearchName(e.target.value)}
           className="rounded-full text-xs border border-gray-200 px-4 py-2 outline-none"
@@ -521,9 +521,9 @@ export default function UserChatHistoryPage() {
         {/* MOBILE */}
         <input
           type="text"
-          placeholder="Search by mobile"
-          value={searchMobile}
-          onChange={(e) => setSearchMobile(e.target.value)}
+          placeholder="Search by Session ID"
+          value={searchSession}
+          onChange={(e) => setSearchSession(e.target.value)}
           className="rounded-full text-xs border border-purple-200 px-4 py-2 outline-none"
         />
 
