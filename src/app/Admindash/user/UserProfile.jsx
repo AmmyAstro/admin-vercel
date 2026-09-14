@@ -98,26 +98,32 @@ export default function UserProfile({ userId }) {
       toast.error(err.message);
     }
   };
-  const { data: chatData, loading: chatLoading  } = useQuery(GET_USERS_CHAT_HISTORY, {
-    variables: {
-      searchInput: {
-        userId,
-        page: chatPage,
-        limit: LIMIT,
+  const { data: chatData, loading: chatLoading } = useQuery(
+    GET_USERS_CHAT_HISTORY,
+    {
+      variables: {
+        searchInput: {
+          userId,
+          page: chatPage,
+          limit: LIMIT,
+        },
       },
+      fetchPolicy: "cache-and-network",
     },
-    fetchPolicy: "cache-and-network",
-  });
-  const { data: callData,  loading: callLoading } = useQuery(GET_USER_CALL_HISTORY, {
-    variables: {
-      searchInput: {
-        userId,
-        page: callPage,
-        limit: LIMIT,
+  );
+  const { data: callData, loading: callLoading } = useQuery(
+    GET_USER_CALL_HISTORY,
+    {
+      variables: {
+        searchInput: {
+          userId,
+          page: callPage,
+          limit: LIMIT,
+        },
       },
+      fetchPolicy: "cache-and-network",
     },
-    fetchPolicy: "cache-and-network",
-  });
+  );
   const calls = callData?.getUserCallHistory?.data || [];
   const handleDownloadRecording = async (sessionId) => {
     try {
@@ -154,13 +160,13 @@ export default function UserProfile({ userId }) {
     () => [
       {
         header: "Session ID",
-        render: (row) =>         <div className="flex flex-col gap-1">
-            <span
-              className={`px-2 py- rounded-full text-xs font-semibold`}
-            >
+        render: (row) => (
+          <div className="flex flex-col gap-1">
+            <span className={`px-2 py- rounded-full text-xs font-semibold`}>
               {row.sessionId?.slice(0, 8)}
             </span>
           </div>
+        ),
       },
       {
         header: "Astrologer",
@@ -182,7 +188,7 @@ export default function UserProfile({ userId }) {
         header: "Rate / Min",
         render: (row) => `₹${row.ratePerMin || 0}`,
       },
-   
+
       {
         header: "Dhwani Earned",
         render: (row) => row.coinsEarned ?? "-",
@@ -191,7 +197,7 @@ export default function UserProfile({ userId }) {
         header: "Astrologer Earned",
         render: (row) => row.commission ?? "-",
       },
-         {
+      {
         header: " Deducted",
         render: (row) => row.coinsDeducted ?? "-",
       },
@@ -285,7 +291,7 @@ export default function UserProfile({ userId }) {
               </button>
             )}
 
-                   {row.hasRemedy && (
+            {row.hasRemedy && (
               <button
                 title="View Remedy"
                 onClick={() => {
@@ -316,6 +322,7 @@ export default function UserProfile({ userId }) {
     },
     fetchPolicy: "cache-and-network",
   });
+  const roleName = JSON.parse(localStorage.getItem("user") || "{}")?.role?.name;
 
   const reviews = reviewData?.getUserReviews?.data || [];
 
@@ -489,15 +496,6 @@ export default function UserProfile({ userId }) {
       ),
     },
   ];
-  const maskMobile = (countryCode, mobile) => {
-    if (!mobile) return "N/A";
-
-    const last4 = mobile.slice(-4);
-
-    return `${countryCode || ""} ${"*".repeat(
-      Math.max(0, mobile.length - 4),
-    )}${last4}`;
-  };
 
   return (
     <div className="p- space-y-4">
@@ -513,8 +511,6 @@ export default function UserProfile({ userId }) {
             <h1 className="text-2xl font-bold">{user?.name || "N/A"}</h1>
 
             <p className="text-gray-800 text-sm">#{user?.id}</p>
-
-         
           </div>
         </div>
         <CustomButton
@@ -589,7 +585,7 @@ export default function UserProfile({ userId }) {
 
         <StatCard
           title="Total Recharge"
-          value={`₹${user?.stats?.totalRecharge || 0}`}
+          value={`₹${user?.stats?.totalRecharge.toFixed(2) || 0}`}
           icon={<FaCoins />}
           color="border-yellow-200 bg-yellow-50 text-yellow-700"
         />
@@ -616,16 +612,16 @@ export default function UserProfile({ userId }) {
 
           <div className="grid grid-cols-3 gap-5">
             <Info label="Name" value={user?.name} />
-
-            <Info
-              label="Mobile"
-              value={maskMobile(user?.countryCode, user?.mobile)}
-            />
+     
+  {["SUPER_ADMIN", "MANAGER"].includes(roleName) && (
+    <Info
+      label="Mobile"
+      value={`${user?.countryCode || ""} ${user?.mobile || ""}`}
+    />
+  )}
 
             <Info label="Gender" value={user?.gender} />
-
             <Info label="Occupation" value={user?.occupation} />
-
             <Info
               label="Birth Date"
               value={
@@ -634,7 +630,6 @@ export default function UserProfile({ userId }) {
                   : "N/A"
               }
             />
-
             <Info label="Birth Time" value={user?.birthTime} />
           </div>
           <div className="bg-purple-200 rounded-2xl border-gray-300 mt-5 py-3 px-5">
@@ -693,20 +688,22 @@ export default function UserProfile({ userId }) {
           {tab === "Wallet" && <WalletTab userId={userId} />}
 
           {tab === "Recharge" && <RechargeTab userId={userId} />}
-             {tab === "Chats" && (
+          {tab === "Chats" && (
             <>
               {chatLoading ? (
                 <p>Loading...</p>
               ) : (
                 <>
-                <DataTable columns={historyColumns} data={chats} />
-                <Pagination
-  page={chatData?.getUsersChatHistory?.currentPage || chatPage}
-  totalPages={chatData?.getUsersChatHistory?.totalPages || 1}
-  onPrevious={() => setChatPage((p) => Math.max(1, p - 1))}
-  onNext={() => setChatPage((p) => p + 1)}
-/>
-                      </>
+                  <DataTable columns={historyColumns} data={chats} />
+                  <Pagination
+                    page={
+                      chatData?.getUsersChatHistory?.currentPage || chatPage
+                    }
+                    totalPages={chatData?.getUsersChatHistory?.totalPages || 1}
+                    onPrevious={() => setChatPage((p) => Math.max(1, p - 1))}
+                    onNext={() => setChatPage((p) => p + 1)}
+                  />
+                </>
               )}
             </>
           )}
@@ -717,14 +714,14 @@ export default function UserProfile({ userId }) {
                 <p>Loading...</p>
               ) : (
                 <>
-                <DataTable columns={historyColumns} data={calls} />
-                <Pagination
-  page={callData?.getUserCallHistory?.currentPage || callPage}
-  totalPages={callData?.getUserCallHistory?.totalPages || 1}
-  onPrevious={() => setCallPage((p) => Math.max(1, p - 1))}
-  onNext={() => setCallPage((p) => p + 1)}
-/>
-                      </>
+                  <DataTable columns={historyColumns} data={calls} />
+                  <Pagination
+                    page={callData?.getUserCallHistory?.currentPage || callPage}
+                    totalPages={callData?.getUserCallHistory?.totalPages || 1}
+                    onPrevious={() => setCallPage((p) => Math.max(1, p - 1))}
+                    onNext={() => setCallPage((p) => p + 1)}
+                  />
+                </>
               )}
             </>
           )}
