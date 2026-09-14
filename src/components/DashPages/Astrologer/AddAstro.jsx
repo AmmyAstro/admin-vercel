@@ -586,7 +586,7 @@ const [updateAstrologer, { loading: updateLoading }] = useMutation(
   const onSubmit = async (formData) => {
     try {
       const fd = new FormData();
-
+ 
        console.log("FORM GENDER:", formData.gender);
 
       if (formData.profilePic instanceof File) {
@@ -724,7 +724,7 @@ const [updateAstrologer, { loading: updateLoading }] = useMutation(
       label: "Language Known",
       name: "languages",
       placeholder: "Select Language",
-      options: ["English", "Hindi", "Punjabi", "Malayalam"],
+      options: ["English", "Hindi", "Punjabi", "Malayalam", "Telugu", "Tamil", "Kannada", "Sanskrit", "Gujarati","Bangla" ],
     },
     {
       label: "Problems Handled",

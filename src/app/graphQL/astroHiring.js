@@ -331,6 +331,7 @@ export const GET_SESSION_ANALYTICS = gql`
         roomId
         type
         userName
+        astroName
         status
         ratePerMin
         durationSec
