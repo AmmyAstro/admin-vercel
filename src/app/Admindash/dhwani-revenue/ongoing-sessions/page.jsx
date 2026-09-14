@@ -118,7 +118,11 @@ export default function OngoingSessions() {
       </div>
     );
   }
+const formatStartedAt = (startedAt) => {
+  if (!startedAt) return "-";
 
+  return dayjs(startedAt).format("D MMMM, YYYY, hh:mm A");
+};
   const getDuration = (startedAt) => {
     if (!startedAt) return "-";
 
@@ -158,10 +162,13 @@ export default function OngoingSessions() {
               <thead>
                 <tr className="bg-purple-50 text-[#2c0a4d]">
                   <th className="text-left p-3">User</th>
+                                   
+
+
                   <th>Type</th>
                   <th className="text-left p-3">Session</th>
                   <th className="text-left p-3">Rate/Min</th>
-                  <th className="text-left p-3">Amount</th>
+                  <th className="text-left p-3">Info</th>
                   <th className="text-left p-3">Duration</th>
                   <th className="text-left p-3">Action</th>
                 </tr>
@@ -193,9 +200,15 @@ export default function OngoingSessions() {
 
                     <td className="p-3">₹{item.ratePerMin || 0}/min</td>
 
-                    <td className="p-3 font-semibold text-green-600">
-                      ₹{item.coinsDeducted || 0}
-                    </td>
+                  <td className="p-3">
+  <div className="text-xs text-gray-800">
+    {item.astroName || "-"}
+  </div>
+
+  <div className="text-[10px] text-gray-500 mt-1">
+    {formatStartedAt(item.startedAt)}
+  </div>
+</td>
 
                     <td className="p-3 font-medium text-orange-600">
                       {getDuration(item.startedAt)}
