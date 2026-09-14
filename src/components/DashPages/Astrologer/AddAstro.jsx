@@ -542,36 +542,46 @@ const [updateAstrologer, { loading: updateLoading }] = useMutation(
     });
   }, [astroData, reset]);
 
-  useEffect(() => {
-    if (!pincode || pincode.toString().length !== 6) return;
+ useEffect(() => {
+  if (!pincode || pincode.toString().length !== 6) {
+    return;
+  }
 
-    const timer = setTimeout(async () => {
-      try {
-        const res = await fetch(`https://api.zippopotam.us/in/${pincode}`);
+  const timer = setTimeout(async () => {
+    try {
+      const res = await fetch(
+        `https://api.pincodeapi.in/api/v1/pincode/${pincode}`
+      );
 
-        if (!res.ok) {
-          // Invalid pincode or not found
-          setValue("countryStateCity.country", "");
-          setValue("countryStateCity.state", "");
-          setValue("countryStateCity.city", "");
-          return;
-        }
-
-        const data = await res.json();
-
-        if (data?.places?.[0]) {
-          const place = data.places[0];
-          setValue("countryStateCity.country", "India");
-          setValue("countryStateCity.state", place["state"]);
-          setValue("countryStateCity.city", place["place name"]);
-        }
-      } catch (error) {
-        console.log("Pincode fetch error:", error);
+      if (!res.ok) {
+        setValue("countryStateCity.country", "");
+        setValue("countryStateCity.state", "");
+        setValue("countryStateCity.city", "");
+        return;
       }
-    }, 500);
 
-    return () => clearTimeout(timer);
-  }, [pincode, setValue]);
+      const data = await res.json();
+
+      const postOffice = data?.data?.post_offices?.[0];
+
+      if (postOffice) {
+        setValue("countryStateCity.country", "India");
+        setValue(
+          "countryStateCity.state",
+          postOffice.state || ""
+        );
+        setValue(
+          "countryStateCity.city",
+          postOffice.district || postOffice.office_name || ""
+        );
+      }
+    } catch (error) {
+      console.error("Pincode fetch error:", error);
+    }
+  }, 500);
+
+  return () => clearTimeout(timer);
+}, [pincode, setValue]);
 
   const onSubmit = async (formData) => {
     try {
@@ -1005,12 +1015,14 @@ const [updateAstrologer, { loading: updateLoading }] = useMutation(
                 alt="user"
                 className="input-img-side"
               />
-              <CustomInput
-                className="w-full outline-none border-0 border-none bg-transparent"
-                type="number"
-                placeholder="Enter pincode"
-                {...register("pincode", { valueAsNumber: true })}
-              />
+         <CustomInput
+  className="w-full outline-none border-0 border-none bg-transparent"
+  type="text"
+  inputMode="numeric"
+  maxLength={6}
+  placeholder="Enter pincode"
+  {...register("pincode")}
+/>
             </div>
             {errors.pincode && (
               <p className="text-red-500 text-xs">{errors.pincode.message}</p>

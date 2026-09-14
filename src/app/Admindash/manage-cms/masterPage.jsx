@@ -78,7 +78,7 @@ export default function MasterManager({
             setSelected(null);
             setOpenDrawer(true);
           }}
-          className="flex items-center gap-2 rounded-xl bg-violet-600 px-5 py-3 text-white"
+          className="flex items-center gap-2 rounded-full bg-violet-600 px-5 py-3 text-white"
         >
           <Plus size={18} />
           Create {title.slice(0, -1)}
@@ -93,12 +93,12 @@ export default function MasterManager({
             placeholder={`Search ${title}`}
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            className="w-full rounded-xl border py-3 pl-10 pr-4"
+            className="w-full rounded-full border-gray-300 border py-3 pl-10 pr-4"
           />
         </div>
       </div>
 
-      <div className="overflow-hidden rounded-2xl border bg-white shadow">
+      <div className="overflow-hidden rounded-2xl border border-gray-400 bg-white shadow">
         <table className="w-full">
           <thead className="bg-gray-100">
             <tr>
@@ -147,7 +147,10 @@ export default function MasterManager({
 
             {!loading &&
               current.map((item) => (
-                <tr key={item.id} className="border-t hover:bg-gray-50">
+                <tr
+                  key={item.id}
+                  className="border-t border-gray-300 hover:bg-gray-50"
+                >
                   <td className="p-4 font-medium">{item.name}</td>
 
                   <td>{item.slug}</td>
@@ -168,6 +171,7 @@ export default function MasterManager({
                   <td>
                     <div className="flex justify-center gap-3">
                       <button
+                        className="cursor-pointer"
                         onClick={() => {
                           setSelected(item);
                           setOpenDrawer(true);
@@ -176,7 +180,10 @@ export default function MasterManager({
                         <Pencil size={18} className="text-blue-600" />
                       </button>
 
-                      <button onClick={() => setDeleteId(item.id)}>
+                      <button
+                        className="cursor-pointer"
+                        onClick={() => setDeleteId(item.id)}
+                      >
                         <Trash2 size={18} />
                       </button>
                     </div>
@@ -187,13 +194,13 @@ export default function MasterManager({
         </table>
       </div>
 
-      <div className="mt-6 flex justify-end gap-2">
+      <div className="mt-6 flex justify-center gap-2">
         <button
           disabled={page == 1}
           onClick={() => setPage(page - 1)}
-          className="rounded-lg border px-4 py-2"
+          className="rounded-full  px-2  py-2"
         >
-          Prev
+      <svg width={18} height={18} viewBox="0 0 640 640"><path fill="rgb(30, 48, 80)" d="M169.4 297.4C156.9 309.9 156.9 330.2 169.4 342.7L361.4 534.7C373.9 547.2 394.2 547.2 406.7 534.7C419.2 522.2 419.2 501.9 406.7 489.4L237.3 320L406.6 150.6C419.1 138.1 419.1 117.8 406.6 105.3C394.1 92.8 373.8 92.8 361.3 105.3L169.3 297.3z"/></svg>
         </button>
 
         <span className="rounded-lg bg-violet-100 px-4 py-2">
@@ -203,9 +210,9 @@ export default function MasterManager({
         <button
           disabled={page == totalPages}
           onClick={() => setPage(page + 1)}
-          className="rounded-lg border px-4 py-2"
+          className="rounded-full  px-2 py-2"
         >
-          Next
+          <svg width={18} height={18} viewBox="0 0 640 640"><path fill="rgb(30, 48, 80)" d="M471.1 297.4C483.6 309.9 483.6 330.2 471.1 342.7L279.1 534.7C266.6 547.2 246.3 547.2 233.8 534.7C221.3 522.2 221.3 501.9 233.8 489.4L403.2 320L233.9 150.6C221.4 138.1 221.4 117.8 233.9 105.3C246.4 92.8 266.7 92.8 279.2 105.3L471.2 297.3z"/></svg>
         </button>
       </div>
 
