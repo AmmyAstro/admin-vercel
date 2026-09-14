@@ -190,6 +190,16 @@ export default function UsersListPage() {
           </span>
         ),
       },
+            {
+        header: "Contact",
+        render: (row) => (
+          <span
+            className={`px-3 py-1 rounded-full text-xs  `}
+          >
+            {row.mobile || "N/A"}
+          </span>
+        ),
+      },
       {
         header: "Wallet Balance",
         render: (row) => (
