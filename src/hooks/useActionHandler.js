@@ -38,6 +38,7 @@ export const useActionHandler = () => {
 
       // 🔥 Handle both structured + boolean responses
       const result = res?.data?.[Object.keys(res.data)[0]];
+      console.log("testing");
 
       if (typeof result === "boolean") {
         // toast.success("Action successful");
