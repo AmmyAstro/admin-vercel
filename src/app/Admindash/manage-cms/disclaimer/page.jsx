@@ -35,7 +35,7 @@ export default function DisclaimerAdminPage() {
   // GET PAGE
   // =========================
 
-const { data, loading, refetch } = useQuery(GET_DISCLAIMER_PAGE);
+  const { data, loading, refetch } = useQuery(GET_DISCLAIMER_PAGE);
 
   // =========================
   // UPSERT
@@ -82,17 +82,17 @@ const { data, loading, refetch } = useQuery(GET_DISCLAIMER_PAGE);
             : values.keywords,
       };
 
-     await upsertDisclaimerPage({
-  variables: {
-    input: payload,
-  },
-});
+      await upsertDisclaimerPage({
+        variables: {
+          input: payload,
+        },
+      });
 
-await refetch();
+      await refetch();
 
-setIsEditing(false);
+      setIsEditing(false);
 
-toast.success("Updated Successfully");
+      toast.success("Updated Successfully");
     } catch (error) {
       console.log(error);
 
@@ -110,17 +110,17 @@ toast.success("Updated Successfully");
         <div className="flex items-center justify-between">
           <h1 className="text-4xl font-bold">Disclaimer CMS</h1>
 
-         {data?.getDisclaimerPage && (
-  <button
-    type="button"
-    onClick={() => setIsEditing(!isEditing)}
-    className={`px-5 py-2 text-white rounded-lg ${
-      isEditing ? "bg-gray-500" : "bg-blue-600"
-    }`}
-  >
-    {isEditing ? "Cancel Edit" : "Edit Disclaimer"}
-  </button>
-)}
+          {data?.getDisclaimerPage && (
+            <button
+              type="button"
+              onClick={() => setIsEditing(!isEditing)}
+              className={`px-5 py-2 text-white rounded-lg ${
+                isEditing ? "bg-gray-500" : "bg-blue-600"
+              }`}
+            >
+              {isEditing ? "Cancel Edit" : "Edit Disclaimer"}
+            </button>
+          )}
         </div>
 
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-10">
@@ -133,7 +133,7 @@ toast.success("Updated Successfully");
               {...register("title")}
               disabled={!isEditing}
               placeholder="Disclaimer"
-              className="border p-4 rounded-xl w-full"
+              className="border border-gray-300 p-4 rounded-xl w-full"
             />
           </div>
 
@@ -144,7 +144,7 @@ toast.success("Updated Successfully");
 
             <TapEditor
               value={watch("content")}
-            editable={isEditing}
+              editable={isEditing}
               onChange={(value) => setValue("content", value)}
               placeholder="Disclaimer content"
             />
@@ -152,34 +152,34 @@ toast.success("Updated Successfully");
 
           {/* ================= SEO ================= */}
 
-          <div className="border rounded-2xl p-6 space-y-6">
+          <div className="border border-gray-300 rounded-2xl p-6 space-y-6">
             <h2 className="text-2xl font-semibold">SEO</h2>
 
             <input
               {...register("metaTitle")}
               disabled={!isEditing}
               placeholder="Meta Title"
-              className="border p-4 rounded-xl w-full"
+              className="border border-gray-300 p-4 rounded-xl w-full"
             />
 
             <textarea
               {...register("metaDescription")}
               disabled={!isEditing}
               placeholder="Meta Description"
-              className="border p-4 rounded-xl w-full h-40"
+              className="border border-gray-300 p-4 rounded-xl w-full h-40"
             />
 
             <input
               disabled={!isEditing}
               {...register("keywords")}
               placeholder="keyword1, keyword2"
-              className="border p-4 rounded-xl w-full"
+              className="border border-gray-300 p-4 rounded-xl w-full"
             />
 
             <select
               {...register("status")}
               disabled={!isEditing}
-              className="border p-4 rounded-xl w-full"
+              className="border border-gray-300 p-4 rounded-xl w-full"
             >
               <option value="DRAFT">Draft</option>
 
@@ -206,7 +206,7 @@ toast.success("Updated Successfully");
                     status: data?.getDisclaimerPage?.status || "DRAFT",
                   });
                 }}
-                className="px-8 py-4 border rounded-xl"
+                className=" border border-gray-300 rounded-full  text-black px-5 text-sm cursor-pointer  py-2"
               >
                 Cancel
               </button>
@@ -214,7 +214,7 @@ toast.success("Updated Successfully");
               <button
                 type="submit"
                 disabled={updateLoading}
-                className="bg-purple-600 text-white px-10 py-4 rounded-xl"
+                className="bg-purple-600 rounded-full  text-white px-5 text-sm cursor-pointer  py-2"
               >
                 {updateLoading
                   ? "Saving..."
