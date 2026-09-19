@@ -1,7 +1,7 @@
 "use client";
 
 import { gql } from "@apollo/client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 
 import CustomInput from "@/components/Custom/CustomInput";
