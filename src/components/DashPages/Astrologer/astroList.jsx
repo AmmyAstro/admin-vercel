@@ -52,6 +52,7 @@ const [selectedAstrologer, setSelectedAstrologer] = useState(null);
   const canViewProfile = isSuperAdmin || can("astroprofile", "view");
   const canEdit = isSuperAdmin || can("astrologer-list", "update");
   const canDelete = isSuperAdmin || can("astrologer-list", "delete");
+const [loggedInUser, setLoggedInUser] = useState(null);
 
   console.log("PERMISSION DEBUG:", {
     isSuperAdmin,
@@ -99,11 +100,18 @@ const [restoreAstrologer] = useMutation(RESTORE_ASTRO);
     router.push(`/Admindash/astrologer/edit-astrologer/${id}`);
   };
 
+
+useEffect(() => {
   const storedUser = localStorage.getItem("user");
 
-const loggedInUser = storedUser
-  ? JSON.parse(storedUser)
-  : null;
+  if (storedUser) {
+    try {
+      setLoggedInUser(JSON.parse(storedUser));
+    } catch (error) {
+      console.error("Invalid user data in localStorage", error);
+    }
+  }
+}, []);
   const deletedBy = loggedInUser?.name || "Unknown User";
 const handleDeleteAstrologer = async (id, remark) => {
   try {
