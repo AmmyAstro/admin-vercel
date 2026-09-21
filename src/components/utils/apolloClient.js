@@ -34,6 +34,7 @@ const uploadLink = new UploadHttpLink({
   },
 });
 
+console.log("xxxxxxxxxxxxxxxxxxxx");
 
 const link = split(
   ({ query }) => {
