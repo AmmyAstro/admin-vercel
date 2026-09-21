@@ -20,21 +20,20 @@ export const authTokenVar = makeVar(null);
 
 const httpLink = new HttpLink({
   uri:
-    process.env.GRAPHQL_URL ,
+    process.env.NEXT_PUBLIC_GRAPHQL_URL,
   
   credentials: "include",
 });
 
 const uploadLink = new UploadHttpLink({
   uri:
-    process.env.GRAPHQL_URL,
+    process.env.NEXT_PUBLIC_GRAPHQL_URL,
   credentials: "include",
   headers: {
     "apollo-require-preflight": "true",
   },
 });
 
-console.log("xxxxxxxxxxxxxxxxxxxx");
 
 const link = split(
   ({ query }) => {
